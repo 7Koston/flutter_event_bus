@@ -1,13 +1,12 @@
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_event_bus/flutter_event_bus.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group("EventBus", () {
     test("should publish and respond to event", () {
       final eventBus = EventBus(sync: true);
 
-      String capturedEvent;
+      String? capturedEvent;
 
       eventBus.respond<String>((String event) {
         capturedEvent = event;
@@ -21,8 +20,8 @@ void main() {
     test("should respond to event by type", () {
       final eventBus = EventBus(sync: true);
 
-      List<String> capturedStrings = List();
-      List<int> capturedNumbers = List();
+      List<String> capturedStrings = [];
+      List<int> capturedNumbers = [];
 
       eventBus.respond<String>((String event) {
         capturedStrings.add(event);
@@ -45,7 +44,7 @@ void main() {
     test("should not recieve event after disposed subscription", () {
       final eventBus = EventBus(sync: true);
 
-      List<String> capturedEvents = List();
+      List<String> capturedEvents = [];
 
       final subscription = eventBus.respond<String>((String event) {
         capturedEvents.add(event);

@@ -1,5 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'dart:async';
+
+import 'package:flutter/widgets.dart';
+
 import 'Subscription.dart';
 
 /// Allow widgets to communicate to each other without direct coupling
@@ -45,8 +47,8 @@ class EventBus {
       Subscription(_stream).respond<T>(responder);
 
   /// Try to find [EventBus] provided by an ancestor [EventBusWidget]
-  static EventBus of(BuildContext context) =>
-      EventBusWidget.of(context).eventBus;
+  static EventBus? of(BuildContext context) =>
+      EventBusWidget.of(context)?.eventBus;
 
   /// An convenient call to publish event via the [EventBus] provided by an ancestor [EventBusWidget]
   ///
@@ -59,7 +61,7 @@ class EventBus {
   /// EventBus.of(context).publish(event);
   /// ```
   static void publishTo(BuildContext context, event) =>
-      of(context).publish(event);
+      of(context)?.publish(event);
 }
 
 /// Widget to provide [EventBus] into child widget tree
@@ -91,7 +93,7 @@ class EventBusWidget extends InheritedWidget {
   /// The [eventBus] param chould be useful if you want to access eventBus from widget who hold [EventBusWidget],
   /// or you are using custom [StreamController] in Event Bus.
   EventBusWidget(
-      {Key key, @required Widget child, EventBus eventBus, bool sync = false})
+      {Key? key, required Widget child, EventBus? eventBus, bool sync = false})
       : eventBus = eventBus ?? EventBus(sync: sync),
         super(key: key, child: child);
 
@@ -100,6 +102,6 @@ class EventBusWidget extends InheritedWidget {
       eventBus != oldWidget.eventBus;
 
   /// Find the closeset [EventBusWidget] from ancester tree.
-  static EventBusWidget of(BuildContext context) =>
+  static EventBusWidget? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<EventBusWidget>();
 }

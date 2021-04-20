@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'Subscription.dart';
+
 import 'EventBus.dart';
+import 'Subscription.dart';
 
 /// Base class for the busiess object that handles events that published on [EventBus].
 /// It should be used as base class to a [State] of a [StatefulWidget].
@@ -24,12 +25,12 @@ import 'EventBus.dart';
 /// }
 /// ```
 abstract class Interactor<T extends StatefulWidget> extends State<T> {
-  Subscription _subscription;
+  Subscription? _subscription;
 
   /// [EventBus] provided by ancestor [EventBusWidget]
   /// Cannot not be accessed in [initState] or [dispose], as state has not yet or had been removed from element tree.
   @protected
-  EventBus get eventBus => EventBus.of(context);
+  EventBus? get eventBus => EventBus.of(context);
 
   @override
   void didChangeDependencies() {
@@ -42,7 +43,7 @@ abstract class Interactor<T extends StatefulWidget> extends State<T> {
 
   @override
   void dispose() {
-    _subscription.dispose();
+    _subscription?.dispose();
 
     super.dispose();
   }
@@ -58,5 +59,5 @@ abstract class Interactor<T extends StatefulWidget> extends State<T> {
   /// If there is absolutely no subscription in this interactor, an empty [Subscription] can be obtained
   /// via `Subscription.empty()`.
   @protected
-  Subscription subscribeEvents(EventBus eventBus);
+  Subscription? subscribeEvents(EventBus? eventBus);
 }
